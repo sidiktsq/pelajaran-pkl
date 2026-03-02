@@ -1,0 +1,48 @@
+Transactions memungkinkan Anda mengeksekusi serangkaian operasi, dengan jaminan bahwa semua operasi berhasil atau tidak ada yang diterapkan jika terjadi error.
+
+#Transaction Dasar
+DB::transaction(function () {
+    DB::table('users')->update(['votes' => 1]);
+    
+    DB::table('posts')->delete();
+});
+
+Jika exception terjadi dalam fungsi closure, transaction akan otomatis di-rollback.
+
+#Manual Transactions
+
+// Memulai transaction
+DB::beginTransaction();
+
+try {
+    DB::table('users')->update(['votes' => 1]);
+    DB::table('posts')->delete();
+    
+    // Jika sampai di sini tanpa exception, commit transaction
+    DB::commit();
+} catch (\Exception $e) {
+    // Jika terjadi exception, rollback transaction
+    DB::rollBack();
+    
+    // Re-throw exception jika diperlukan
+    throw $e;
+}
+
+#Transaction dengan Savepoints
+
+DB::transaction(function () {
+    // Operasi pertama...
+    
+    DB::transaction(function () {
+        // Nested transaction via savepoint...
+    });
+    
+    // Operasi kedua...
+});
+
+#Transaction dengan Deadlock Prevention
+
+// Retry transaction hingga 5 kali jika terjadi deadlock
+DB::transaction(function () {
+    // Operasi database...
+}, 5);

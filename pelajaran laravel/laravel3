@@ -1,0 +1,51 @@
+MVC (Model-View-Controller)
+MVC adalah pola arsitektur yang memisahkan aplikasi menjadi tiga komponen utama:
+
+- Model: Menangani data dan logika bisnis
+- View: Menampilkan data kepada pengguna
+- Controller: Mengontrol aliran aplikasi, memproses permintaan dan menghubungkan Model dan View
+
+Struktur Folder Laravel
+/app                    # Aplikasi inti
+  /Console              # Artisan commands
+  /Exceptions           # Exception handlers
+  /Http                 # Controllers, Middleware, Requests
+  /Models               # Model Eloquent
+  /Providers            # Service providers
+/bootstrap              # File bootstrap aplikasi
+/config                 # File konfigurasi aplikasi
+/database               # Database migrations, factories, seeds
+  /factories            # Model factories
+  /migrations           # Database migrations
+  /seeders              # Database seeders
+/lang                   # File bahasa/lokalisasi
+/public                 # Web root, asset publik
+/resources              # Views, assets mentah (SASS, JS)
+  /css                  # File CSS
+  /js                   # File JavaScript
+  /views                # View Blade
+/routes                 # Definisi route
+  web.php               # Routes web
+  api.php               # Routes API
+  console.php           # Routes konsol
+  channels.php          # Broadcast channels
+/storage                # File yang dihasilkan aplikasi
+  /app                  # File yang dihasilkan aplikasi
+  /framework            # File framework seperti cache
+  /logs                 # Log aplikasi
+/tests                  # Automated tests
+/vendor                 # Dependencies Composer (jangan edit)
+.env                    # Variabel environment
+.env.example            # Template untuk .env
+artisan                 # CLI Artisan
+composer.json           # Daftar dependencies
+package.json            # Dependencies npm untuk frontend
+phpunit.xml             # Konfigurasi PHPUnit
+
+Alur Kerja MVC di Laravel
+- Request masuk ke routes/web.php atau routes/api.php
+- Route memanggil Controller yang sesuai
+- Controller berinteraksi dengan Model untuk ambil/manipulasi data
+- Controller meneruskan data ke View
+- View merender output HTML yang dikirim kembali ke pengguna
+

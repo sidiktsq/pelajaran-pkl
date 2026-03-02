@@ -1,0 +1,186 @@
+#Database Seeders
+Seeders digunakan untuk mengisi database dengan data contoh/testing.
+
+#Membuat Seeder
+php artisan make:seeder UserSeeder
+
+#Struktur Dasar Seeder
+
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        DB::table('users')->insert([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        
+        // Batch insert
+        DB::table('users')->insert([
+            [
+                'name' => 'Alice',
+                'email' => 'alice@example.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'name' => 'Bob',
+                'email' => 'bob@example.com',
+                'password' => Hash::make('password'),
+            ],
+        ]);
+    }
+}
+
+#DatabaseSeeder
+DatabaseSeeder digunakan untuk menjalankan semua seeder:
+
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     */
+    public function run(): void
+    {
+        // Menjalankan individual seeders
+        $this->call([
+            UserSeeder::class,
+            PostSeeder::class,
+            CommentSeeder::class,
+        ]);
+        
+        // Kombinasi dengan factories
+        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(5)
+            ->hasProfile(1)
+            ->hasPosts(3)
+            ->create();
+    }
+}
+
+#Menjalankan Seeders
+
+# Semua seeder
+php artisan db:seed
+
+# Specific seeder
+php artisan db:seed --class=UserSeeder
+
+# Fresh migrations dan seed
+php artisan migrate:fresh --seed
+
+#Model Factories
+Factories digunakan untuk membuat data dummy dalam jumlah besar.
+
+#Membuat Factory
+php artisan make:factory PostFactory --model=Post
+
+#Struktur Factory Dasar
+
+<?php
+
+namespace Database\Factories;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+class PostFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
+    {
+        return [
+            'title' => fake()->sentence(),
+            'content' => fake()->paragraphs(3, true),
+            'user_id' => User::factory(),
+            'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'views' => fake()->numberBetween(0, 1000),
+        ];
+    }
+    
+    /**
+     * Indicate the post is featured.
+     */
+    public function featured(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_featured' => true,
+            ];
+        });
+    }
+    
+    /**
+     * Indicate the post is unpublished.
+     */
+    public function unpublished(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'published_at' => null,
+            ];
+        });
+    }
+}
+
+#Menggunakan Factories
+
+// Di code
+use App\Models\Post;
+use App\Models\User;
+
+// Membuat satu model
+$user = User::factory()->create();
+
+// Membuat banyak model
+$users = User::factory()->count(3)->create();
+
+// Membuat model dengan state tertentu
+$user = User::factory()->suspended()->create();
+
+// Menimpa attributes
+$user = User::factory()->create([
+    'name' => 'Custom Name',
+]);
+
+// Factory untuk relasi
+$post = Post::factory()
+        ->for(User::factory()->state([
+            'name' => 'John Doe',
+        ]))
+        ->create();
+
+// Has many relasi
+$user = User::factory()
+        ->has(Post::factory()->count(3))
+        ->create();
+
+// Eloquent relationship magic methods
+$user = User::factory()
+        ->hasPosts(3)
+        ->hasProfile(1)
+        ->create();
+
+// Nested factories
+$user = User::factory()

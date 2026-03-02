@@ -1,0 +1,47 @@
+1.membuat fungsi
+
+<?php
+// Fungsi sederhana
+function sayHello() {
+    echo "Hello, World!";
+}
+
+// Fungsi dengan parameter
+function greet($name, $time = "pagi") {
+    return "Selamat $time, $name!";
+}
+
+// Fungsi dengan return value
+function add($a, $b) {
+    return $a + $b;
+}
+
+// Pemanggilan fungsi
+sayHello();
+echo greet("Alice");
+echo greet("Bob", "sore");
+$result = add(5, 3);
+echo "Hasil: $result";
+?>
+
+2.fungsi built-in php
+
+<?php
+// String functions
+$text = "  Hello World  ";
+echo strlen($text);           // Panjang string
+echo trim($text);            // Hapus spasi di awal/akhir
+echo strtoupper($text);      // Uppercase
+echo strtolower($text);      // Lowercase
+echo substr($text, 0, 5);    // Substring
+
+// Math functions
+echo abs(-5);                // Nilai absolut
+echo round(3.7);            // Pembulatan
+echo rand(1, 100);          // Random number
+echo max(1, 5, 3, 9, 2);    // Nilai maksimum
+
+// Date functions
+echo date("Y-m-d H:i:s");   // Format tanggal
+echo time();                // Unix timestamp
+?>

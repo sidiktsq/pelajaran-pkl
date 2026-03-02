@@ -1,0 +1,64 @@
+IT Universitas Teknologi Bandung
+Home
+Course
+English (US) 
+inimss 
+Lessons
+Share
+Exit Fullscreen
+Back to course
+🎯 Tujuan Proyek:
+Membuat website portofolio pribadi yang memuat:
+
+Profil diri
+Daftar proyek yang pernah dikerjakan
+Formulir kontak
+Tampilan menarik dengan CSS
+Interaksi dasar dengan JavaScript (menggunakan DOM dan HTTP Request)
+📌 Fitur yang Harus Ada:
+1. Halaman Home (HTML Basic)
+Menampilkan foto dan nama
+Deskripsi singkat
+Menggunakan struktur HTML yang benar (nested tag, heading, paragraph)
+2. Halaman Proyek (List)
+Daftar proyek dalam bentuk list (ordered list / unordered list)
+Gambar thumbnail proyek menggunakan tag <img>
+3. Formulir Kontak (Form Input)
+Input nama, email, dan pesan
+Tombol submit
+Data form ditampilkan kembali di bawah form menggunakan DOM Manipulation
+4. Tampilan CSS
+Menggunakan CSS selector: tag, class, dan ID
+Mengatur warna teks, background, ukuran font
+Menggunakan pseudo-class seperti hover
+Menerapkan display block dan inline
+5. Interaksi JavaScript
+Menggunakan DOM getElementById() dan innerHTML / innerText untuk menampilkan data form
+Menggunakan localStorage untuk menyimpan data nama yang akan ditampilkan di halaman Home
+Menggunakan event onClick untuk tombol
+6. Bonus: Fetch Data dari API Publik
+Menggunakan fetch() atau AXIOS untuk menampilkan postingan contoh dari API JSON Placeholder di halaman "Blog"
+Contoh:
+https://jsonplaceholder.typicode.com/posts
+💻 Struktur Folder:
+bash
+
+CopyEdit
+
+/portofolio
+│
+├── index.html         # Halaman Home
+├── projects.html      # Halaman Proyek
+├── contact.html       # Halaman Kontak
+├── style.css          # File CSS
+├── script.js          # File JavaScript
+└── assets             # Folder gambar portofolio
+
+✨ Tampilan Minimum yang Harus Dibuat:
+Navbar dengan link ke halaman Home, Projects, dan Contact
+Tampilan Responsive sederhana (boleh grid atau flexbox)
+Form Kontak yang memunculkan data yang diketik secara live setelah tombol submit ditekan
+🏆 Nilai Tambahan Jika:
+Memakai Async/Await
+Menggunakan AXIOS untuk mengambil data API
+Memakai JSON.parse dan JSON.stringify pada localStorage

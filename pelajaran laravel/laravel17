@@ -1,0 +1,53 @@
+Kapan Menggunakan Eloquent ORM
+
+-Bekerja dengan Entitas Utuh: Ketika Anda perlu merepresentasikan dan memanipulasi entitas database secara utuh.
+-Relasi Kompleks: Ketika aplikasi Anda memiliki relasi antar tabel yang kompleks.
+-Fitur Bawaan: Untuk memanfaatkan fitur bawaan seperti events, observers, mutators, dan accessors.
+-Readability: Untuk kode yang lebih expressif dan mudah dibaca.
+-Soft Deletes: Ketika Anda memerlukan fitur soft deletes.
+
+// Contoh Eloquent yang memperjelas kode
+$activeUsers = User::with(['posts' => function($query) {
+    $query->where('is_published', true);
+}])->where('active', true)->get();
+
+Kapan Menggunakan Query Builder
+-Query Kompleks: Untuk query yang sangat kompleks atau custom yang sulit diekspresikan dengan Eloquent.
+-Performa: Untuk operasi yang memerlukan optimasi performa maksimal.
+-Operasi Massal: Untuk operasi seperti update atau delete massal.
+-Agregasi Data: Untuk query dengan banyak fungsi agregasi dan grouping.
+-Query Mentah/Raw: Ketika Anda membutuhkan kontrol penuh atas SQL yang dihasilkan.
+
+// Contoh Query Builder untuk operasi kompleks
+$statistics = DB::table('users')
+    ->join('posts', 'users.id', '=', 'posts.user_id')
+    ->select(DB::raw('users.name, COUNT(posts.id) as post_count, AVG(posts.rating) as avg_rating'))
+    ->where('users.active', true)
+    ->groupBy('users.id', 'users.name')
+    ->having('post_count', '>', 3)
+    ->orderBy('avg_rating', 'desc')
+    ->limit(10)
+    ->get();
+
+Perbandingan Performa
+
+Aspek:
+- Overhead
+- Memory Usage
+- Execution Time
+- Development Speed
+- Maintenance
+
+Eloquent ORM
+- Lebih tinggi (loading model, hydration)
+- Lebih tinggi (setiap record menjadi object)
+- Relatif lebih lambat
+- Lebih cepat untuk operasi CRUD standar
+- Lebih mudah karena tingkat abstraksi tinggi
+
+Query Builder
+- Lebih rendah (tanpa hydration)
+- Lebih rendah (hasil sebagai stdClass)
+- Relatif lebih cepat
+- Membutuhkan penulisan query manual
+- Bisa lebih kompleks untuk dipelihara

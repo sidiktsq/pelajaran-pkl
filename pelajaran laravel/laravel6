@@ -1,0 +1,169 @@
+#View Dasar
+View adalah file tampilan yang menyajikan konten HTML untuk aplikasi. Di Laravel, view disimpan di direktori /resources/views.
+
+#Membuat dan Rendering View
+
+// Membuat file view di resources/views/greeting.blade.php
+// <h1>Hello, {{ $name }}</h1>
+
+// Rendering view dari controller
+public function show($id)
+{
+    return view('greeting', ['name' => 'James']);
+}
+
+#Blade Templating Engine
+Blade adalah template engine Laravel yang menyediakan sintaks yang elegan untuk tugas umum seperti conditional, loops, dan inheritance.
+
+#Sintaks Blade Dasar
+#Echo / Output Data
+
+{{-- Menampilkan variabel --}}
+{{ $name }}
+
+{{-- Menampilkan variabel dengan escape otomatis HTML --}}
+{{ $name }}
+
+{{-- Menampilkan tanpa escape HTML --}}
+{!! $html !!}
+
+#Conditional Statements
+
+@if (count($records) === 1)
+    Ada satu record!
+@elseif (count($records) > 1)
+    Ada banyak record!
+@else
+    Tidak ada record!
+@endif
+
+@unless (Auth::check())
+    Anda belum login.
+@endunless
+
+@isset($records)
+    // $records ditetapkan dan tidak null...
+@endisset
+
+@empty($records)
+    // $records "empty"...
+@endempty
+
+#Loops
+
+@for ($i = 0; $i < 10; $i++)
+    Nilai saat ini: {{ $i }}
+@endfor
+
+@foreach ($users as $user)
+    <p>{{ $user->name }}</p>
+@endforeach
+
+@forelse ($users as $user)
+    <li>{{ $user->name }}</li>
+@empty
+    <p>Tidak ada pengguna</p>
+@endforelse
+
+@while (true)
+    <p>Saya sedang looping selamanya.</p>
+@endwhile
+
+#Template Inheritance
+
+{{-- resources/views/layouts/app.blade.php --}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Name - @yield('title')</title>
+</head>
+<body>
+    <div class="container">
+        @yield('content')
+    </div>
+    @yield('scripts')
+</body>
+</html>
+
+{{-- resources/views/child.blade.php --}}
+@extends('layouts.app')
+
+@section('title', 'Page Title')
+
+@section('content')
+    <p>Ini isi konten halaman.</p>
+@endsection
+
+@section('scripts')
+    <script>
+        // Kode JavaScript
+    </script>
+@endsection
+
+#Components & Slots
+
+{{-- resources/views/components/alert.blade.php --}}
+<div class="alert alert-{{ $type }}">
+    {{ $slot }}
+</div>
+
+{{-- Menggunakan component --}}
+@component('components.alert', ['type' => 'danger'])
+    <strong>Whoops!</strong> Something went wrong!
+@endcomponent
+
+{{-- Atau menggunakan tag component (Laravel 7+) --}}
+<x-alert type="danger">
+    <strong>Whoops!</strong> Something went wrong!
+</x-alert>
+
+#Directive Lainnya
+
+{{-- Include partial view --}}
+@include('shared.errors')
+
+{{-- Include dengan data --}}
+@include('view.name', ['status' => 'complete'])
+
+{{-- Include jika ada --}}
+@includeIf('view.name', ['status' => 'complete'])
+
+{{-- Include berdasarkan boolean --}}
+@includeWhen($boolean, 'view.name', ['status' => 'complete'])
+
+{{-- Menampilkan komentar, tidak akan terlihat di HTML --}}
+{{-- Ini adalah komentar --}}
+
+{{-- Raw PHP --}}
+@php
+    $counter = 1;
+@endphp
+
+{{-- CSRF field untuk formulir --}}
+@csrf
+
+#Struktur View yang Disarankan
+
+/resources
+  /views
+    /layouts      # Template master layout
+    /partials     # Bagian kecil yang dapat digunakan kembali
+    /components   # Component UI yang dapat digunakan kembali
+    /pages        # Halaman spesifik
+    /auth         # View autentikasi
+    /errors       # Halaman error
+
+# Passing Data ke View
+
+// Cara 1: Array asosiatif
+return view('greeting', ['name' => 'James', 'age' => 25]);
+
+// Cara 2: Metode with()
+return view('greeting')
+        ->with('name', 'James')
+        ->with('age', 25);
+
+// Cara 3: Compact (menggunakan nama variabel)
+$name = 'James';
+$age = 25;
+return view('greeting', compact('name', 'age'));

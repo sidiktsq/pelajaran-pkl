@@ -1,0 +1,114 @@
+#Join Dasar
+
+// Inner Join
+$users = DB::table('users')
+            ->join('contacts', 'users.id', '=', 'contacts.user_id')
+            ->select('users.*', 'contacts.phone', 'contacts.email')
+            ->get();
+
+// Left Join
+$users = DB::table('users')
+            ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+            ->get();
+
+// Right Join
+$users = DB::table('users')
+            ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
+            ->get();
+
+// Cross Join (Cartesian product)
+$users = DB::table('sizes')
+            ->crossJoin('colors')
+            ->get();
+
+#Join Advanced
+
+// Join dengan kondisi tambahan
+$users = DB::table('users')
+            ->join('contacts', function ($join) {
+                $join->on('users.id', '=', 'contacts.user_id')
+                     ->where('contacts.status', '=', 'active');
+            })
+            ->get();
+
+// Join menggunakan whereJsonContains (MySQL/PostgreSQL)
+$users = DB::table('users')
+            ->whereJsonContains('options->languages', 'en')
+            ->get();
+
+// whereJsonLength
+$users = DB::table('users')
+            ->whereJsonLength('options->languages', '>', 1)
+            ->get();
+
+#Union
+Union menggabungkan dua atau lebih query menjadi satu hasil.
+
+$first = DB::table('users')
+            ->whereNull('first_name');
+
+$users = DB::table('users')
+            ->whereNull('last_name')
+            ->union($first)
+            ->get();
+
+#Subquery
+
+// Select dengan Subquery
+$latestPosts = DB::table('posts')
+                ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
+                ->groupBy('user_id');
+
+$users = DB::table('users')
+            ->joinSub($latestPosts, 'latest_posts', function ($join) {
+                $join->on('users.id', '=', 'latest_posts.user_id');
+            })
+            ->get();
+
+// Where dengan Subquery
+$users = DB::table('users')
+            ->where('votes', '>', function ($query) {
+                $query->selectRaw('AVG(votes)')->from('users');
+            })
+            ->get();
+
+// From dengan Subquery
+$latestPosts = DB::table('posts')
+                ->select('user_id', 'content')
+                ->where('created_at', '>', now()->subDay());
+
+$latestPostsByUser = DB::table('users')
+                        ->joinSub($latestPosts, 'latest_posts', function ($join) {
+                            $join->on('users.id', '=', 'latest_posts.user_id');
+                        })
+                        ->get();
+
+#Exists & Not Exists
+// Where Exists
+$users = DB::table('users')
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                      ->from('orders')
+                      ->whereColumn('orders.user_id', 'users.id');
+            })
+            ->get();
+
+// Where Not Exists
+$users = DB::table('users')
+            ->whereNotExists(function ($query) {
+                $query->select(DB::raw(1))
+                      ->from('orders')
+                      ->whereColumn('orders.user_id', 'users.id');
+            })
+            ->get();
+
+#Common Table Expressions (CTE)
+
+$users = DB::table('users')
+            ->withExpression('active_users', function ($query) {
+                $query->from('users')
+                      ->where('active', 1);
+            })
+            ->join('active_users', 'active_users.id', '=', 'users.id')
+            ->get();
+

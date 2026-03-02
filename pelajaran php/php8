@@ -1,0 +1,81 @@
+1. Indexed Array
+
+<?php
+// Membuat indexed array
+$fruits = ["apple", "banana", "orange"];
+$numbers = array(1, 2, 3, 4, 5);
+
+// Menambah elemen
+$fruits[] = "grape";
+array_push($fruits, "mango", "kiwi");
+
+// Mengakses elemen
+echo $fruits[0]; // apple
+echo $fruits[count($fruits) - 1]; // elemen terakhir
+
+// Loop melalui array
+for ($i = 0; $i < count($fruits); $i++) {
+    echo "Index $i: {$fruits[$i]}<br>";
+}
+?>
+
+2. Associative Array
+
+<?php
+$student = [
+    "name" => "Alice Johnson",
+    "age" => 20,
+    "major" => "Computer Science",
+    "gpa" => 3.85,
+    "courses" => ["PHP", "JavaScript", "Python"]
+];
+
+// Mengakses nilai
+echo $student["name"]; // Alice Johnson
+echo $student["courses"][0]; // PHP
+
+// Menambah atau mengubah nilai
+$student["email"] = "alice@email.com";
+$student["age"] = 21;
+
+// Loop melalui associative array
+foreach ($student as $key => $value) {
+    if (is_array($value)) {
+        echo "$key: " . implode(", ", $value) . "<br>";
+    } else {
+        echo "$key: $value<br>";
+    }
+}
+?>
+
+3. Multidimensional Array
+
+<?php
+$students = [
+    [
+        "id" => 1,
+        "name" => "Alice",
+        "scores" => [85, 90, 78, 92]
+    ],
+    [
+        "id" => 2,
+        "name" => "Bob",
+        "scores" => [78, 85, 88, 80]
+    ],
+    [
+        "id" => 3,
+        "name" => "Charlie",
+        "scores" => [92, 88, 95, 90]
+    ]
+];
+
+// Mengakses data
+echo $students[0]["name"]; // Alice
+echo $students[0]["scores"][0]; // 85
+
+// Menghitung rata-rata nilai setiap siswa
+foreach ($students as $student) {
+    $average = array_sum($student["scores"]) / count($student["scores"]);
+    echo "{$student['name']}: " . round($average, 2) . "<br>";
+}
+?>

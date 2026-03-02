@@ -1,0 +1,44 @@
+Kita dapat menggunakan Query Builder di dalam Model Eloquent untuk mendapatkan keuntungan dari kedua dunia.
+
+#Metode Scope
+
+// User.php
+class User extends Model
+{
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+    
+    public function scopePopular($query, $minPosts = 5)
+    {
+        return $query->withCount('posts')
+                     ->having('posts_count', '>=', $minPosts)
+                     ->orderBy('posts_count', 'desc');
+    }
+    
+    // Menggunakan Query Builder langsung dalam metode
+    public static function getActiveUsersWithStatistics()
+    {
+        return DB::table('users')
+                ->join('posts', 'users.id', '=', 'posts.user_id')
+                ->select('users.id', 'users.name', 
+                         DB::raw('COUNT(posts.id) as post_count'), 
+                         DB::raw('AVG(posts.rating) as avg_rating'))
+                ->where('users.active', true)
+                ->groupBy('users.id', 'users.name')
+                ->having('post_count', '>', 0)
+                ->get();
+    }
+}
+
+// Penggunaan
+$activeUsers = User::active()->get();
+$popularUsers = User::popular(10)->get();
+$statistics = User::getActiveUsersWithStatistics();
+
+#Kelebihan Menggunakan Query Builder di Model
+- Enkapsulasi: Logic query kompleks tetap berada dalam model.
+- Reusabilitas: Query dapat digunakan kembali di berbagai bagian aplikasi.
+- Pemeliharaan: Lebih mudah untuk memelihara dan memperbarui query.
+- Performa: Dapat memilih pendekatan yang paling efisien untuk setiap kasus.

@@ -1,0 +1,112 @@
+#Routing Dasar
+Route didefinisikan dalam file di direktori /routes:
+
+- web.php: Routes web dengan session, CSRF protection, dll.
+- api.php: Routes API stateless
+- console.php: Artisan commands
+- channels.php: Broadcasting channels
+
+#Contoh Basic Routes
+// routes/web.php
+
+// Route dasar
+Route::get('/greeting', function () {
+    return 'Hello World';
+});
+
+// Route dengan parameter
+Route::get('/user/{id}', function ($id) {
+    return 'User '.$id;
+});
+
+// Route dengan parameter opsional
+Route::get('/user/{name?}', function ($name = 'John') {
+    return 'User '.$name;
+});
+
+// Route dengan constraint parameter
+Route::get('/user/{id}', function ($id) {
+    return 'User '.$id;
+})->where('id', '[0-9]+');
+
+// Route dengan name (untuk generate URL)
+Route::get('/profile', function () {
+    return 'Profile';
+})->name('profile');
+
+// Group routes
+Route::prefix('admin')->group(function () {
+    Route::get('/users', function () {
+        return 'Admin Users';
+    });
+    Route::get('/settings', function () {
+        return 'Admin Settings';
+    });
+});
+
+// Route dengan middleware
+Route::get('/dashboard', function () {
+    return 'Dashboard';
+})->middleware('auth');
+
+#Controllers
+Controller mengorganisir logika request dalam class terpisah, menghindari closure dalam route files.
+
+- Membuat Controller Baru
+php artisan make:controller UserController
+
+#Struktur Controller Dasar
+
+// app/Http/Controllers/UserController.php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    public function index()
+    {
+        return 'Daftar pengguna';
+    }
+    
+    public function show($id)
+    {
+        return 'Detail pengguna: ' . $id;
+    }
+    
+    public function create()
+    {
+        return 'Form tambah pengguna';
+    }
+    
+    public function store(Request $request)
+    {
+        // Logika menyimpan data
+        return 'Pengguna disimpan';
+    }
+}
+
+#Menggunakan Controller dalam Routes
+
+// routes/web.php
+
+use App\Http\Controllers\UserController;
+
+// Single action
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+
+// Resource controller (CRUD lengkap)
+Route::resource('photos', PhotoController::class);
+
+// Resource controller dengan action terbatas
+Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+]);
+
+// Resource controller dengan action yang dikecualikan
+Route::resource('photos', PhotoController::class)->except([
+    'create', 'store', 'update', 'destroy'
+]);
+

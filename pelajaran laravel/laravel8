@@ -1,0 +1,153 @@
+#Konsep Migrasi
+Migrasi adalah version control untuk database yang memungkinkan tim untuk:
+
+- Mendefinisikan skema database
+- Berbagi perubahan skema dengan tim
+- Menerapkan/rollback perubahan secara konsisten di berbagai lingkungan
+
+#Membuat Migrasi
+
+# Membuat migrasi dasar
+php artisan make:migration create_users_table
+
+# Membuat migrasi untuk tabel yang sudah ada
+php artisan make:migration add_votes_to_users_table --table=users
+
+# Membuat migrasi dengan kolom id di-disable
+php artisan make:migration create_users_table --create=users --table
+
+#Struktur File Migrasi
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
+    }
+};
+
+#Menjalankan Migrasi
+
+# Menjalankan semua migrasi yang belum dijalankan
+php artisan migrate
+
+# Membatalkan semua migrasi
+php artisan migrate:rollback
+
+# Mengembalikan sejumlah migrasi
+php artisan migrate:rollback --step=5
+
+# Refresh migrasi (rollback lalu migrate)
+php artisan migrate:refresh
+
+# Reset dan jalankan ulang semua migrasi
+php artisan migrate:fresh
+
+#Tipe Kolom yang Umum Digunakan
+
+// Tipe ID dan timestamp
+$table->id();                  // Big Integer auto-increment
+$table->bigIncrements('id');   // Sama dengan id()
+$table->timestamps();          // Menambahkan created_at dan updated_at
+$table->timestamp('logged_at')->nullable();
+$table->softDeletes();         // Menambahkan deleted_at untuk soft delete
+
+// Tipe string
+$table->string('name', 100);   // VARCHAR dengan panjang opsional
+$table->text('description');   // TEXT
+$table->mediumText('content'); // MEDIUMTEXT
+$table->longText('content');   // LONGTEXT
+$table->char('code', 4);       // CHAR dengan panjang tetap
+
+// Tipe numerik
+$table->integer('votes');      // INTEGER
+$table->tinyInteger('flag');   // TINYINT
+$table->smallInteger('votes'); // SMALLINT
+$table->mediumInteger('votes');// MEDIUMINT
+$table->bigInteger('votes');   // BIGINT
+$table->float('amount', 8, 2); // FLOAT dengan presisi
+$table->double('amount', 8, 2);// DOUBLE dengan presisi
+$table->decimal('amount', 8, 2);// DECIMAL dengan presisi
+
+// Tipe Boolean dan tanggal
+$table->boolean('confirmed');  // BOOLEAN / TINYINT(1)
+$table->date('created_date');  // DATE
+$table->dateTime('created_at');// DATETIME
+$table->time('sunrise');       // TIME
+
+// Tipe JSON dan Binary
+$table->json('options');       // JSON
+$table->jsonb('options');      // JSONB (PostgreSQL)
+$table->binary('data');        // BLOB
+
+#Modifikasi Kolom
+
+// Modifier kolom
+$table->string('email')->unique();
+$table->integer('votes')->default(0);
+$table->string('name')->nullable();
+$table->enum('level', ['beginner', 'intermediate', 'advanced']);
+$table->string('serial')->index();
+$table->text('description')->fulltext(); // Hanya MySQL
+
+// Foreign Keys
+$table->foreignId('user_id')->constrained();
+// Sama dengan:
+$table->unsignedBigInteger('user_id');
+$table->foreign('user_id')->references('id')->on('users');
+
+// Foreign key dengan opsi advanced
+$table->foreignId('user_id')
+      ->constrained()
+      ->onUpdate('cascade')
+      ->onDelete('cascade');
+
+#Mengubah Tabel yang Sudah Ada
+Untuk mengubah kolom yang sudah ada, Anda perlu menginstal package doctrine/dbal:
+
+composer require doctrine/dbal
+
+// Mengubah migrasi
+Schema::table('users', function (Blueprint $table) {
+    // Mengubah tipe kolom
+    $table->string('name', 50)->change();
+    
+    // Mengubah kolom dengan properti
+    $table->string('email')->unique()->change();
+    
+    // Mengubah nama kolom
+    $table->renameColumn('from', 'to');
+    
+    // Menghapus kolom
+    $table->dropColumn('votes');
+    $table->dropColumn(['votes', 'avatar', 'location']);
+    
+    // Menghapus indeks
+    $table->dropUnique('users_email_unique');
+    $table->dropIndex('users_email_index');
+});

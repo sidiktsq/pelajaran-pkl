@@ -1,0 +1,62 @@
+Eloquent ORM (Object-Relational Mapping) adalah fitur Laravel yang menyediakan implementasi ActiveRecord yang indah dan simpel untuk bekerja dengan database. Setiap tabel database memiliki "Model" yang digunakan untuk berinteraksi dengan tabel tersebut.
+
+#Membuat Model Dasar
+
+// app/Models/User.php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    // Nama tabel (opsional - secara default akan menggunakan bentuk jamak lowercase)
+    protected $table = 'users';
+    
+    // Primary key (opsional - default 'id')
+    protected $primaryKey = 'id';
+    
+    // Timestamps (opsional - default true)
+    public $timestamps = true;
+    
+    // Mass Assignment Protection
+    protected $fillable = ['name', 'email', 'password'];
+    // atau
+    protected $guarded = ['id']; // Kolom yang tidak boleh mass assignment
+}
+
+#Operasi Dasar Eloquent
+
+// Create
+$user = new User;
+$user->name = 'John Doe';
+$user->email = 'john@example.com';
+$user->save();
+
+// atau dengan mass assignment
+$user = User::create([
+    'name' => 'John Doe',
+    'email' => 'john@example.com',
+    'password' => bcrypt('password')
+]);
+
+// Read
+$users = User::all(); // Semua user
+$user = User::find(1); // Berdasarkan primary key
+$user = User::where('email', 'john@example.com')->first(); // Dengan kondisi
+
+// Update
+$user = User::find(1);
+$user->name = 'John Smith';
+$user->save();
+
+// atau dengan mass update
+User::where('id', 1)->update(['name' => 'John Smith']);
+
+// Delete
+$user = User::find(1);
+$user->delete();
+
+// atau
+User::destroy(1);
+User::destroy([1, 2, 3]);
+

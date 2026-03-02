@@ -1,0 +1,60 @@
+Eloquent mendukung beberapa jenis relasi antar model yang umum digunakan dalam aplikasi.
+
+#One-to-One
+
+// User.php
+public function profile()
+{
+    return $this->hasOne(Profile::class);
+}
+
+// Profile.php
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+// Penggunaan
+$profile = User::find(1)->profile;
+$user = Profile::find(1)->user;
+
+#One-to-Many
+
+// User.php
+public function posts()
+{
+    return $this->hasMany(Post::class);
+}
+
+// Post.php
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+// Penggunaan
+$posts = User::find(1)->posts; // Collection dari post
+$user = Post::find(1)->user;
+
+#Many-to-Many
+// User.php
+public function roles()
+{
+    return $this->belongsToMany(Role::class);
+}
+
+// Role.php
+public function users()
+{
+    return $this->belongsToMany(User::class);
+}
+
+// Penggunaan
+$roles = User::find(1)->roles;
+$users = Role::find(1)->users;
+
+// Dengan pivot data tambahan
+public function roles()
+{
+    return $this->belongsToMany(Role::class)->withPivot('active', 'created_by');
+}

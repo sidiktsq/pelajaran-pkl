@@ -1,0 +1,133 @@
+#Pengoptimalan Select
+
+// Select hanya kolom yang diperlukan, bukan *
+$users = DB::table('users')->select('id', 'name', 'email')->get();
+
+// Gunakan exists untuk pengecekan keberadaan
+$hasAdmin = DB::table('users')
+               ->where('role', 'admin')
+               ->exists();
+
+// Gunakan doesntExist untuk pengecekan ketidakberadaan
+$noAdmin = DB::table('users')
+              ->where('role', 'admin')
+              ->doesntExist();
+
+// Gunakan first() daripada get() jika hanya perlu satu record
+$user = DB::table('users')->where('email', 'john@example.com')->first();
+
+// Gunakan value() untuk mendapatkan nilai single column
+$name = DB::table('users')->where('id', 1)->value('name');
+
+// Gunakan find() untuk ID lookup
+$user = DB::table('users')->find(1);
+
+// Batasi jumlah hasil untuk paging
+$users = DB::table('users')->limit(10)->offset(0)->get();
+
+#Indexing dan Query Planning
+
+// Pastikan kolom yang digunakan dalam where, join, dan order by memiliki indeks
+// Tambahkan indeks di migrasi:
+
+// Indeks tunggal
+$table->index('email');
+
+// Indeks komposit
+$table->index(['account_id', 'created_at']);
+
+// Indeks unik
+$table->unique('email');
+
+// Gunakan explain untuk memeriksa query plan
+DB::select('EXPLAIN SELECT * FROM users WHERE email = ?', ['john@example.com']);
+
+#Caching Query Results
+// Cache hasil query selama 60 menit
+$users = Cache::remember('users', 60 * 60, function () {
+    return DB::table('users')->get();
+});
+
+// Gunakan tags untuk invalidasi yang lebih granular
+Cache::tags(['users', 'frontend'])->remember('active.users', 60, function () {
+    return DB::table('users')
+               ->where('active', 1)
+               ->get();
+});
+
+#Pagination
+
+// Pagination untuk UI
+$users = DB::table('users')->paginate(15);
+
+// Pagination API-friendly
+$users = DB::table('users')->simplePaginate(15);
+
+// Cursor pagination (lebih efisien untuk dataset besar)
+$users = DB::table('users')->cursorPaginate(15);
+
+#Penggunaan Eager Loading untuk Relasi (dengan Eloquent)
+
+// Tanpa eager loading (N+1 problem)
+$books = App\Models\Book::all();
+
+foreach ($books as $book) {
+    echo $book->author->name; // Separate query for each book
+}
+
+// Dengan eager loading
+$books = App\Models\Book::with('author')->get();
+
+foreach ($books as $book) {
+    echo $book->author->name; // No additional queries
+}
+
+#Optimasi untuk Tabel Besar
+
+// Menggunakan chunkById untuk proses batch
+DB::table('large_table')
+    ->where('processed', false)
+    ->chunkById(100, function ($records) {
+        foreach ($records as $record) {
+            // Process each record
+        }
+    });
+
+// Menggunakan unsorted chunks jika urutan tidak penting
+DB::table('large_table')
+    ->where('processed', false)
+    ->chunkById(100, function ($records) {
+        foreach ($records as $record) {
+            // Process each record
+        }
+    }, 'id', true); // true artinya ascending order tidak diperlukan
+
+#Optimasi Join
+
+// Pilih index yang tepat untuk join
+$users = DB::table('users')
+            ->join('posts', 'users.id', '=', 'posts.user_id') // pastikan user_id diindex
+            ->select('users.*', 'posts.title')
+            ->get();
+
+// Pertimbangkan subquery daripada join untuk beberapa kasus
+$latestPosts = DB::table('posts')
+                ->select('user_id', DB::raw('MAX(created_at) as last_post_date'))
+                ->groupBy('user_id');
+
+$users = DB::table('users')
+            ->joinSub($latestPosts, 'latest_posts', function ($join) {
+                $join->on('users.id', '=', 'latest_posts.user_id');
+            })
+            ->get();
+
+#Database Sharding dan Koneksi
+
+// Tentukan koneksi untuk operasi read/write
+$users = DB::connection('read_replica')->table('users')->get();
+DB::connection('master')->table('users')->insert($userData);
+
+// Multiple read replicas
+$dbs = ['read_replica_1', 'read_replica_2', 'read_replica_3'];
+$db = $dbs[array_rand($dbs)];
+$users = DB::connection($db)->table('users')->get();

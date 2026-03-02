@@ -1,0 +1,176 @@
+Query Builder Laravel menyediakan interface yang lancar dan ekspresif untuk membuat dan menjalankan database queries. Query Builder menggunakan PDO parameter binding untuk melindungi aplikasi dari SQL injection.
+
+#Mengambil Semua Record
+$users = DB::table('users')->get();
+
+foreach ($users as $user) {
+    echo $user->name;
+}
+
+#Mengambil Single Record
+// First record
+$user = DB::table('users')->first();
+
+// Specific column from first record
+$email = DB::table('users')->value('email');
+
+// Find by ID
+$user = DB::table('users')->find(3);
+
+#Mengambil List Nilai Kolom
+// Get array of all emails
+$emails = DB::table('users')->pluck('email');
+
+// Get array of emails with name as key
+$emails = DB::table('users')->pluck('email', 'name');
+
+#Select Clause
+// Select specific columns
+$users = DB::table('users')
+            ->select('name', 'email as user_email')
+            ->get();
+
+// Select distinct
+$users = DB::table('users')->distinct()->get();
+
+// Add columns to existing select
+$query = DB::table('users')->select('name');
+$users = $query->addSelect('email')->get();
+
+#Where Clauses
+// Basic where
+$users = DB::table('users')
+            ->where('votes', '=', 100)
+            ->get();
+
+// Shorthand equals (=)
+$users = DB::table('users')
+            ->where('votes', 100)
+            ->get();
+
+// Common operators
+$users = DB::table('users')
+            ->where('votes', '>=', 100)
+            ->get();
+
+// Where with OR
+$users = DB::table('users')
+            ->where('votes', '>=', 100)
+            ->orWhere('name', 'John')
+            ->get();
+
+// Where Between
+$users = DB::table('users')
+            ->whereBetween('votes', [1, 100])
+            ->get();
+
+// Where Not Between
+$users = DB::table('users')
+            ->whereNotBetween('votes', [1, 100])
+            ->get();
+
+// Where In
+$users = DB::table('users')
+            ->whereIn('id', [1, 2, 3])
+            ->get();
+
+// Where Not In
+$users = DB::table('users')
+            ->whereNotIn('id', [1, 2, 3])
+            ->get();
+
+// Where Null
+$users = DB::table('users')
+            ->whereNull('updated_at')
+            ->get();
+
+// Where Not Null
+$users = DB::table('users')
+            ->whereNotNull('updated_at')
+            ->get();
+
+// Where Date
+$users = DB::table('users')
+            ->whereDate('created_at', '2020-01-31')
+            ->get();
+
+// Where Month, Year, Day
+$users = DB::table('users')
+            ->whereMonth('created_at', '12')
+            ->whereYear('created_at', '2020')
+            ->whereDay('created_at', '31')
+            ->get();
+
+// Where Column (compare two columns)
+$users = DB::table('users')
+            ->whereColumn('first_name', 'last_name')
+            ->get();
+
+$users = DB::table('users')
+            ->whereColumn('updated_at', '>', 'created_at')
+            ->get();
+
+#Pengelompokan Kondisi
+// Nested where
+$users = DB::table('users')
+            ->where('name', '=', 'John')
+            ->where(function ($query) {
+                $query->where('votes', '>', 100)
+                      ->orWhere('title', '=', 'Admin');
+            })
+            ->get();
+
+// Hasil SQL:
+// select * from users where name = 'John' and (votes > 100 or title = 'Admin')
+
+#Order By, Group By, dan Having
+// Order By
+$users = DB::table('users')
+            ->orderBy('name', 'desc')
+            ->get();
+
+// Multiple Order By
+$users = DB::table('users')
+            ->orderBy('name', 'desc')
+            ->orderBy('email', 'asc')
+            ->get();
+
+// Latest & Oldest (by created_at)
+$users = DB::table('users')
+            ->latest()
+            ->get();
+
+$users = DB::table('users')
+            ->oldest()
+            ->get();
+
+// Random order
+$randomUser = DB::table('users')
+                ->inRandomOrder()
+                ->first();
+
+// Group By & Having
+$users = DB::table('users')
+            ->groupBy('account_id')
+            ->having('account_id', '>', 100)
+            ->get();
+
+// Multiple Group By
+$users = DB::table('users')
+            ->groupBy('first_name', 'status')
+            ->having('account_id', '>', 100)
+            ->get();
+
+#Limit & Offset
+
+// Skip 10 and take 5
+$users = DB::table('users')
+            ->skip(10)
+            ->take(5)
+            ->get();
+
+// Aliasnya
+$users = DB::table('users')
+            ->offset(10)
+            ->limit(5)
+            ->get();

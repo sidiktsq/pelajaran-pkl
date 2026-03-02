@@ -1,0 +1,61 @@
+1. Fungsi Dasar Array
+
+<?php
+$numbers = [1, 5, 3, 9, 2, 8, 4];
+
+// count() - menghitung jumlah elemen
+echo count($numbers); // 7
+
+// array_push() - menambah elemen di akhir
+array_push($numbers, 10, 11);
+
+// array_pop() - menghapus elemen terakhir
+$last = array_pop($numbers);
+
+// array_shift() - menghapus elemen pertama
+$first = array_shift($numbers);
+
+// array_unshift() - menambah elemen di awal
+array_unshift($numbers, 0);
+
+// in_array() - mengecek apakah nilai ada dalam array
+if (in_array(5, $numbers)) {
+    echo "Angka 5 ditemukan dalam array";
+}
+
+// array_search() - mencari posisi nilai dalam array
+$position = array_search(9, $numbers);
+echo "Angka 9 berada di index: $position";
+?>
+
+2. Fungsi Array Lanjutan
+
+<?php
+$fruits = ["banana", "apple", "orange", "grape"];
+
+// sort() - mengurutkan ascending
+sort($fruits);
+print_r($fruits); // [apple, banana, grape, orange]
+
+// rsort() - mengurutkan descending
+rsort($fruits);
+print_r($fruits); // [orange, grape, banana, apple]
+
+// array_merge() - menggabungkan array
+$vegetables = ["carrot", "potato", "onion"];
+$foods = array_merge($fruits, $vegetables);
+
+// array_slice() - mengambil sebagian array
+$subset = array_slice($foods, 2, 3);
+
+// array_filter() - menyaring array
+$numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+$evenNumbers = array_filter($numbers, function($num) {
+    return $num % 2 == 0;
+});
+
+// array_map() - menerapkan fungsi ke setiap elemen
+$squares = array_map(function($num) {
+    return $num * $num;
+}, $numbers);
+?>

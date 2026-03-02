@@ -1,0 +1,52 @@
+1.validasi input sederhana 
+
+<?php
+function validateInput($data) {
+    $data = trim($data);           // Hapus spasi di awal/akhir
+    $data = stripslashes($data);   // Hapus backslashes
+    $data = htmlspecialchars($data); // Konversi karakter khusus
+    return $data;
+}
+
+function validateEmail($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+function validatePhone($phone) {
+    // Validasi nomor telepon Indonesia
+    return preg_match("/^(\+62|0)[0-9]{8,13}$/", $phone);
+}
+
+// Contoh penggunaan
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = validateInput($_POST['name']);
+    $email = validateInput($_POST['email']);
+    $phone = validateInput($_POST['phone']);
+    
+    $errors = [];
+    
+    if (empty($name)) {
+        $errors[] = "Nama harus diisi";
+    }
+    
+    if (empty($email)) {
+        $errors[] = "Email harus diisi";
+    } elseif (!validateEmail($email)) {
+        $errors[] = "Format email tidak valid";
+    }
+    
+    if (empty($phone)) {
+        $errors[] = "Nomor telepon harus diisi";
+    } elseif (!validatePhone($phone)) {
+        $errors[] = "Format nomor telepon tidak valid";
+    }
+    
+    if (empty($errors)) {
+        echo "Data valid dan berhasil diproses!";
+    } else {
+        foreach ($errors as $error) {
+            echo "<p style='color: red;'>$error</p>";
+        }
+    }
+}
+?>

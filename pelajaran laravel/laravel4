@@ -1,0 +1,84 @@
+Artisan Command Line Interface
+Artisan adalah antarmuka command-line yang disertakan Laravel, menyediakan banyak perintah yang membantu dalam pengembangan aplikasi.
+Perintah Artisan Umum
+
+# Melihat daftar perintah tersedia
+php artisan list
+
+# Menjalankan development server
+php artisan serve
+
+# Membuat controller baru
+php artisan make:controller NamaController
+
+# Membuat model dengan migration
+php artisan make:model Nama -m
+
+# Menjalankan migrasi database
+php artisan migrate
+
+# Membuat resource controller lengkap
+php artisan make:controller NamaController --resource
+
+# Membuat middleware
+php artisan make:middleware NamaMiddleware
+
+# Melihat daftar routes
+php artisan route:list
+
+# Membersihkan cache
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+File Konfigurasi
+Laravel menyimpan file konfigurasi di direktori /config:
+
+- app.php: Konfigurasi aplikasi umum
+- auth.php: Autentikasi
+- broadcasting.php: Event broadcasting
+- cache.php: Caching
+- database.php: Pengaturan database
+- filesystems.php: File storage
+- mail.php: Email
+- queue.php: Queue
+- services.php: Layanan pihak ketiga
+- session.php: Session
+- view.php: Template engine
+
+File .env
+File .env menyimpan variabel environment yang bersifat sensitif atau spesifik lingkungan. Ini memungkinkan konfigurasi berbeda untuk development, testing, dan production tanpa mengubah kode.
+
+Contoh .env
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:abcdefghijklmnopqrstuvwxyz
+APP_DEBUG=true
+APP_URL=http://localhost
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=null
+MAIL_FROM_NAME="${APP_NAME}"
+
+Mengakses Konfigurasi dalam Kode
+
+// Mengakses nilai konfigurasi
+$value = config('app.name');
+
+// Menetapkan nilai konfigurasi runtime
+config(['app.timezone' => 'Asia/Jakarta']);
+
+// Mengakses variabel .env langsung
+$value = env('APP_DEBUG', false);

@@ -1,0 +1,26 @@
+Apa itu Laravel?
+Laravel adalah framework PHP open-source yang elegan dan ekspresif, dirancang untuk pengembangan aplikasi web mengikuti pola arsitektur MVC (Model-View-Controller). Diciptakan oleh Taylor Otwell pada tahun 2011, Laravel telah menjadi salah satu framework PHP paling populer karena sintaksnya yang bersih, fitur-fitur yang kuat, dan filosofi pengembangan yang memprioritaskan kesenangan developer.
+
+Filosofi Laravel
+- Elegant Syntax: Kode yang bersih, ekspresif dan mudah dibaca
+- Developer Happiness: Dirancang untuk membuat pengembangan menjadi menyenangkan
+- Rapid Development: Menyediakan banyak tools untuk mempercepat proses pengembangan
+- Convention over Configuration: Menetapkan standar yang konsisten untuk mengurangi keputusan konfigurasi
+
+PHP Modern
+Laravel memanfaatkan fitur-fitur PHP modern seperti:
+
+- Namespaces: Pengorganisasian kode dengan mengelompokkan kelas terkait
+- Composer: Dependency management untuk PHP
+- Traits: Mekanisme untuk menggunakan kembali kode dalam inheritance tunggal
+- Interface: Kontrak untuk mendefinisikan perilaku kelas
+- Anonymous Functions: Fungsi tanpa nama yang dapat disimpan dalam variabel
+- Type Hinting: Menentukan tipe data parameter dan nilai kembali fungsi
+
+Keunggulan Laravel
+- Ekosistem yang kaya dengan package dan tools
+- Komunitas yang besar dan aktif
+- Dokumentasi yang komprehensif
+- Fitur modern seperti ORM (Eloquent), routing, middleware
+- Laravel Sail untuk Docker container development
+- Laravel Forge dan Vapor untuk deployment

@@ -1,0 +1,63 @@
+#File Konfigurasi Database
+Laravel menyimpan konfigurasi database di file config/database.php. File ini mendefinisikan berbagai driver database yang didukung Laravel:
+
+- MySQL
+- PostgreSQL
+- SQLite
+- SQL Server
+
+Namun, untuk menjaga keamanan, detail koneksi sebenarnya (username, password, dsb.) disimpan di file .env:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database
+DB_USERNAME=root
+DB_PASSWORD=password
+
+#Multiple Koneksi Database
+Laravel mendukung penggunaan banyak koneksi database dalam satu aplikasi:
+
+// config/database.php
+'connections' => [
+    'mysql' => [
+        'driver' => 'mysql',
+        'host' => env('DB_HOST', '127.0.0.1'),
+        // konfigurasi lainnya...
+    ],
+    
+    'pgsql' => [
+        'driver' => 'pgsql',
+        'host' => env('DB_HOST_PGSQL', '127.0.0.1'),
+        // konfigurasi lainnya...
+    ],
+],
+
+#Menggunakan Koneksi Database Tertentu
+// Menggunakan koneksi default
+DB::table('users')->get();
+
+// Menggunakan koneksi tertentu
+DB::connection('pgsql')->table('users')->get();
+
+// Mendapatkan instance PDO mentah
+$pdo = DB::connection()->getPdo();
+
+#Pengaturan Tambahan
+Laravel menyediakan berbagai konfigurasi tambahan seperti:
+
+- Sticky: Menjaga koneksi yang sama untuk operasi read/write
+- Read/Write Splitting: Konfigurasi terpisah untuk read dan write
+- Prefix Tabel: Menambahkan prefix untuk semua tabel
+
+'mysql' => [
+    // konfigurasi lainnya...
+    'sticky' => true,
+    'prefix' => 'app_',
+    'read' => [
+        'host' => ['192.168.1.1', '192.168.1.2'],
+    ],
+    'write' => [
+        'host' => ['192.168.1.3'],
+    ],
+],

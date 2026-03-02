@@ -1,0 +1,110 @@
+1. If-Else Statement
+
+<?php
+$nilai = 85;
+
+if ($nilai >= 90) {
+    $grade = "A";
+} elseif ($nilai >= 80) {
+    $grade = "B";
+} elseif ($nilai >= 70) {
+    $grade = "C";
+} elseif ($nilai >= 60) {
+    $grade = "D";
+} else {
+    $grade = "E";
+}
+
+echo "Nilai: $nilai, Grade: $grade";
+?>
+
+2.switch statement 
+
+<?php
+$day = date("N"); // 1=Monday, 7=Sunday
+
+switch ($day) {
+    case 1:
+        echo "Senin";
+        break;
+    case 2:
+        echo "Selasa";
+        break;
+    case 3:
+        echo "Rabu";
+        break;
+    case 4:
+        echo "Kamis";
+        break;
+    case 5:
+        echo "Jumat";
+        break;
+    case 6:
+        echo "Sabtu";
+        break;
+    case 7:
+        echo "Minggu";
+        break;
+    default:
+        echo "Hari tidak valid";
+}
+?>
+
+3.perulangan for
+
+<?php
+// For loop sederhana
+for ($i = 1; $i <= 10; $i++) {
+    echo "Angka: $i<br>";
+}
+
+// Membuat tabel perkalian
+echo "<table border='1'>";
+for ($i = 1; $i <= 10; $i++) {
+    echo "<tr>";
+    for ($j = 1; $j <= 10; $j++) {
+        echo "<td>" . ($i * $j) . "</td>";
+    }
+    echo "</tr>";
+}
+echo "</table>";
+?>
+
+4.pengulangan while
+
+<?php
+$counter = 1;
+while ($counter <= 5) {
+    echo "Counter: $counter<br>";
+    $counter++;
+}
+
+// Do-while
+$num = 1;
+do {
+    echo "Number: $num<br>";
+    $num++;
+} while ($num <= 3);
+?>
+
+5.perulangan foreach
+
+<?php
+$fruits = ["apple", "banana", "orange", "grape"];
+
+// Foreach dengan value saja
+foreach ($fruits as $fruit) {
+    echo "Buah: $fruit<br>";
+}
+
+// Foreach dengan key dan value
+$person = [
+    "name" => "John",
+    "age" => 30,
+    "city" => "Jakarta"
+];
+
+foreach ($person as $key => $value) {
+    echo "$key: $value<br>";
+}
+?>

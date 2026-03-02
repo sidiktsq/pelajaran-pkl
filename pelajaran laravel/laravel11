@@ -1,0 +1,89 @@
+#Raw Expressions
+Raw expressions memungkinkan Anda menulis SQL mentah di dalam query. Penting: Jangan tambahkan user input langsung ke raw expression karena berisiko SQL injection.
+
+$users = DB::table('users')
+            ->select(DB::raw('count(*) as user_count, status'))
+            ->groupBy('status')
+            ->get();
+
+#Raw Methods
+
+// selectRaw
+$users = DB::table('users')
+            ->selectRaw('count(*) as user_count, status')
+            ->groupBy('status')
+            ->get();
+
+// whereRaw / orWhereRaw
+$users = DB::table('users')
+            ->whereRaw('age > ? and votes > ?', [25, 100])
+            ->get();
+
+// havingRaw / orHavingRaw
+$users = DB::table('users')
+            ->select('department', DB::raw('SUM(price) as total_sales'))
+            ->groupBy('department')
+            ->havingRaw('SUM(price) > ?', [2500])
+            ->get();
+
+// orderByRaw
+$users = DB::table('users')
+            ->orderByRaw('updated_at - created_at DESC')
+            ->get();
+
+// groupByRaw
+$users = DB::table('users')
+            ->select('city', 'state')
+            ->groupByRaw('city, state')
+            ->get();
+
+#Raw Queries Lengkap
+
+// DB::select
+$users = DB::select('SELECT * FROM users WHERE active = ?', [1]);
+
+// DB::insert
+$inserted = DB::insert(
+    'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+    ['John', 'john@example.com', bcrypt('password')]
+);
+
+// DB::update
+$affected = DB::update(
+    'UPDATE users SET votes = 100 WHERE name = ?',
+    ['John']
+);
+
+// DB::delete
+$deleted = DB::delete('DELETE FROM users WHERE email = ?', ['john@example.com']);
+
+// DB::statement (untuk query yang tidak mengembalikan nilai)
+DB::statement('DROP TABLE users');
+
+#Pemrosesan Result Sets Besar
+
+// Menggunakan cursor untuk memori yang efisien
+foreach (DB::table('users')->cursor() as $user) {
+    // Memproses tiap user satu per satu tanpa memuat semua ke memori
+}
+
+// Menggunakan chunk untuk batch processing
+DB::table('users')->orderBy('id')->chunk(100, function ($users) {
+    foreach ($users as $user) {
+        // Proses 100 user sekaligus
+    }
+});
+
+// Menggunakan chunckById (lebih efisien untuk tabel besar)
+DB::table('users')->orderBy('id')->chunkById(100, function ($users) {
+    foreach ($users as $user) {
+        DB::table('users')
+            ->where('id', $user->id)
+            ->update(['status' => 'processed']);
+    }
+});
+
+// Lazy collection (Laravel 8+)
+DB::table('users')->orderBy('id')->lazy()->each(function ($user) {
+    // Proses user satu per satu (mirip cursor tapi dengan collection methods)
+});

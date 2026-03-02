@@ -1,0 +1,23 @@
+Apa itu PHP?
+
+PHP (PHP: Hypertext Preprocessor) adalah bahasa pemrograman server-side yang dirancang khusus untuk pengembangan web. PHP bersifat open 
+source dan dapat di-embed langsung ke dalam HTML.
+
+Fungsi PHP dalam Web Development
+- Server-side scripting: Memproses data di server sebelum dikirim ke browser
+- Dynamic content: Membuat halaman web yang dinamis dan interaktif
+- Database integration: Menghubungkan website dengan database
+- Form processing: Menangani input dari form HTML
+- Session management: Mengelola sesi pengguna
+
+Cara Kerja PHP (Server-side scripting)
+- Client (browser) mengirim request ke server
+- Server memproses file PHP
+- PHP engine mengeksekusi kode PHP
+- Hasil eksekusi (HTML) dikirim kembali ke client
+- Browser menampilkan halaman web
+
+Tools yang Dibutuhkan
+- XAMPP/Laragon: Local server environment
+- Browser: Chrome, Firefox, Safari
+- Code Editor: VS Code, Sublime Text, PHPStorm

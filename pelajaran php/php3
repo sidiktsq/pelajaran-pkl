@@ -1,0 +1,38 @@
+1. operator aritmatika
+
+<?php
+$a = 10;
+$b = 3;
+
+echo $a + $b; // 13 (Penjumlahan)
+echo $a - $b; // 7 (Pengurangan)
+echo $a * $b; // 30 (Perkalian)
+echo $a / $b; // 3.33... (Pembagian)
+echo $a % $b; // 1 (Modulus)
+echo $a ** $b; // 1000 (Pangkat)
+?>
+
+2.operator perbandingan
+
+<?php
+$x = 5;
+$y = "5";
+
+var_dump($x == $y);  // true (sama nilai)
+var_dump($x === $y); // false (sama nilai dan tipe)
+var_dump($x != $y);  // false
+var_dump($x !== $y); // true
+var_dump($x > 3);    // true
+var_dump($x < 10);   // true
+?>
+
+3.operator logika
+
+<?php
+$a = true;
+$b = false;
+
+var_dump($a && $b); // false (AND)
+var_dump($a || $b); // true (OR)
+var_dump(!$a);      // false (NOT)
+?>

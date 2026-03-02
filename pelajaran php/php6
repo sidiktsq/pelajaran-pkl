@@ -1,0 +1,78 @@
+1.$_get method
+
+<!-- file: get_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GET Method</title>
+</head>
+<body>
+    <form method="GET" action="process_get.php">
+        <input type="text" name="username" placeholder="Username">
+        <input type="email" name="email" placeholder="Email">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
+<?php
+// file: process_get.php
+if (isset($_GET['username']) && isset($_GET['email'])) {
+    $username = $_GET['username'];
+    $email = $_GET['email'];
+    
+    echo "Username: " . htmlspecialchars($username) . "<br>";
+    echo "Email: " . htmlspecialchars($email) . "<br>";
+    
+    // Data tampil di URL: process_get.php?username=john&email=john@email.com
+} else {
+    echo "Data tidak lengkap!";
+}
+?>
+
+2.$_post method
+
+<!-- file: post_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POST Method</title>
+</head>
+<body>
+    <form method="POST" action="process_post.php">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <textarea name="message" placeholder="Pesan"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
+<?php
+// file: process_post.php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $message = $_POST['message'];
+    
+    echo "Username: " . htmlspecialchars($username) . "<br>";
+    echo "Password: " . str_repeat("*", strlen($password)) . "<br>";
+    echo "Pesan: " . htmlspecialchars($message) . "<br>";
+} else {
+    echo "Akses tidak diizinkan!";
+}
+?>
+
+3.$_request method
+
+
+<?php
+// file: process_request.php
+// Bisa menerima data dari GET atau POST
+if (isset($_REQUEST['data'])) {
+    $data = $_REQUEST['data'];
+    echo "Data yang diterima: " . htmlspecialchars($data);
+} else {
+    echo "Tidak ada data yang diterima";
+}
+?>

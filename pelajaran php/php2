@@ -1,0 +1,84 @@
+- variable php
+Variabel di PHP dimulai dengan tanda $ dan bersifat case-sensitive.
+
+<?php
+$nama = "John Doe";
+$umur = 25;
+$tinggi = 175.5;
+$menikah = false;
+
+echo "Nama: " . $nama . "<br>";
+echo "Umur: " . $umur . " tahun<br>";
+echo "Tinggi: " . $tinggi . " cm<br>";
+echo "Status: " . ($menikah ? "Menikah" : "Belum Menikah");
+?>
+
+-tipe data php
+1.string
+
+<?php
+$text1 = "Hello World";
+$text2 = 'Single Quote';
+$multiline = "Ini adalah
+text multiline
+di PHP";
+
+// String concatenation
+$fullname = $firstname . " " . $lastname;
+?>
+
+2.integer 
+
+<?php
+$angka1 = 100;
+$angka2 = -50;
+$hex = 0xFF; // Hexadecimal
+$octal = 0755; // Octal
+
+echo $angka1 + $angka2; // 50
+?>
+
+3.float
+
+<?php
+$pi = 3.14159;
+$scientific = 1.5e3; // 1500
+$negative = -2.7;
+
+echo round($pi, 2); // 3.14
+?>
+
+4.boolean
+
+<?php
+$isActive = true;
+$isComplete = false;
+
+if ($isActive) {
+    echo "Status: Aktif";
+} else {
+    echo "Status: Tidak Aktif";
+}
+?>
+
+5.array
+
+<?php
+// Indexed Array
+$fruits = array("apple", "banana", "orange");
+$colors = ["red", "green", "blue"];
+
+// Associative Array
+$person = array(
+    "name" => "John",
+    "age" => 30,
+    "city" => "Jakarta"
+);
+
+// Multidimensional Array
+$students = array(
+    array("Alice", 20, "Teknik Informatika"),
+    array("Bob", 21, "Sistem Informasi"),
+    array("Charlie", 19, "Teknik Komputer")
+);
+?>

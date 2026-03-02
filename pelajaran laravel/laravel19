@@ -1,0 +1,167 @@
+Laravel memungkinkan pendekatan hybrid yang menggabungkan kelebihan dari Eloquent dan Query Builder.
+
+#Menggunakan Query Builder untuk Subquery Eloquent
+
+// Mendapatkan users yang memiliki post dengan rating tinggi
+$users = User::whereExists(function ($query) {
+    $query->select(DB::raw(1))
+          ->from('posts')
+          ->whereColumn('posts.user_id', 'users.id')
+          ->where('posts.rating', '>=', 4.5);
+})->get();
+
+#Menggunakan selectRaw dan whereRaw
+
+// Mendapatkan users dengan statistik post menggunakan Eloquent
+$users = User::select('users.*')
+             ->selectRaw('COUNT(posts.id) as post_count, AVG(posts.rating) as avg_rating')
+             ->join('posts', 'users.id', '=', 'posts.user_id')
+             ->where('users.active', true)
+             ->groupBy('users.id')
+             ->having('post_count', '>', 0)
+             ->orderBy('avg_rating', 'desc')
+             ->get();
+
+#Chunking dengan Query Builder untuk Efisiensi Memory
+
+// Memproses jutaan record tanpa kehabisan memory
+DB::table('users')->orderBy('id')->chunk(1000, function ($users) {
+    foreach ($users as $user) {
+        // Proses setiap user
+    }
+});
+
+#Hybrid untuk Performa Terbaik
+
+// Mendapatkan statistik dengan Query Builder untuk performa
+$userStats = DB::table('users')
+              ->join('posts', 'users.id', '=', 'posts.user_id')
+              ->select('users.id', DB::raw('COUNT(posts.id) as post_count'))
+              ->groupBy('users.id')
+              ->get()
+              ->keyBy('id');
+
+// Menggunakan Eloquent untuk manfaatkan relations dan eager loading
+$users = User::with(['profile', 'roles'])->get();
+
+// Menggabungkan data
+foreach ($users as $user) {
+    $user->post_count = $userStats[$user->id]->post_count ?? 0;
+}
+
+#Eloquent Collections dan Manipulasi Data
+
+Eloquent mengembalikan hasil query dalam bentuk Collection, yang memperluas base Collection Laravel dengan metode tambahan.
+
+#Metode Collection Dasar
+
+// Operasi dasar
+$users = User::all();
+$names = $users->pluck('name'); // ['John', 'Jane', ...]
+$firstUser = $users->first();
+$filteredUsers = $users->where('is_admin', true);
+$mappedUsers = $users->map(function($user) {
+    return [
+        'name' => $user->name,
+        'email' => $user->email,
+        'posts_count' => $user->posts->count()
+    ];
+});
+
+#Metode Collection Lanjutan
+
+// Grouping dan manipulasi lanjutan
+$usersByRole = $users->groupBy('role');
+$admins = $users->filter(function($user) {
+    return $user->isAdmin();
+});
+$totalPosts = $users->sum(function($user) {
+    return $user->posts->count();
+});
+
+#Transformasi Data dengan Collections
+
+// Complex data transformation
+$processedUsers = User::with('posts', 'profile')
+    ->get()
+    ->map(function($user) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'profile' => $user->profile->only(['bio', 'website']),
+            'posts' => $user->posts->map->only(['title', 'published_at']),
+            'stats' => [
+                'total_posts' => $user->posts->count(),
+                'avg_rating' => $user->posts->avg('rating') ?? 0,
+                'latest_post' => $user->posts->sortByDesc('published_at')->first()?->title
+            ]
+        ];
+    });
+
+#Contoh Kasus: Laporan Kompleks dengan Pendekatan Hybrid
+
+// Mendapatkan data untuk laporan kompleks dengan memaksimalkan performa
+public static function generateComplexReport($startDate, $endDate)
+{
+    // 1. Mendapatkan statistik dasar dengan Query Builder (untuk performa)
+    $baseStats = DB::table('users')
+        ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+        ->select(
+            'users.id',
+            DB::raw('COUNT(DISTINCT posts.id) as post_count'),
+            DB::raw('SUM(posts.view_count) as total_views')
+        )
+        ->whereBetween('posts.published_at', [$startDate, $endDate])
+        ->groupBy('users.id')
+        ->get()
+        ->keyBy('id');
+    
+    // 2. Mendapatkan data utama dengan Eloquent dan relations (untuk kemudahan)
+    $users = User::with(['profile', 'posts' => function($query) use ($startDate, $endDate) {
+        $query->whereBetween('published_at', [$startDate, $endDate]);
+    }])->get();
+    
+    // 3. Menggabungkan data dan melakukan manipulasi dengan Collections
+    return $users->map(function($user) use ($baseStats) {
+        // Mendapatkan statistik dari query builder 
+        $stats = $baseStats[$user->id] ?? null;
+        $postCount = $stats ? $stats->post_count : 0;
+        $totalViews = $stats ? $stats->total_views : 0;
+        
+        // Kalkulasi tambahan dengan collections
+        $avgRating = $user->posts->avg('rating') ?? 0;
+        $categories = $user->posts->pluck('category')->unique()->values()->all();
+        
+        return [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'joined_at' => $user->created_at->format('Y-m-d'),
+                'bio' => $user->profile->bio ?? null
+            ],
+            'stats' => [
+                'post_count' => $postCount,
+                'total_views' => $totalViews,
+                'avg_views' => $postCount > 0 ? round($totalViews / $postCount, 2) : 0,
+                'avg_rating' => round($avgRating, 2),
+                'categories' => $categories,
+                'most_popular_post' => $user->posts->sortByDesc('view_count')->first()?->title ?? null
+            ]
+        ];
+    });
+}
+
+#Kesimpulan
+- Eloquent ORM sangat baik untuk operasi CRUD standar, relasi antar model, dan readability kode.
+- Query Builder lebih cocok untuk query kompleks, operasi performa-kritis, dan agregasi data.
+- Pendekatan Hybrid menggabungkan kelebihan keduanya:
+- Menggunakan Model Eloquent untuk struktur dan relasi
+- Menggunakan Query Builder di dalam model untuk query kompleks
+- Memanfaatkan Collections untuk manipulasi data
+#Best Practice:
+- Gunakan Eloquent sebagai default untuk kode yang lebih mudah dibaca dan dipelihara
+- Beralih ke Query Builder ketika performa menjadi masalah atau query terlalu kompleks
+- Encapsulate logic query kompleks di dalam model
+- Manfaatkan kemampuan Collections untuk transformasi data setelah query
