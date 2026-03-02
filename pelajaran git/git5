@@ -1,0 +1,39 @@
+Berikut adalah beberapa fitur utama GitHub yang sering digunakan:
+
+#Clone Repositori
+Untuk mengkloning repositori GitHub ke komputer lokal Anda:
+
+git clone https://github.com/username/nama-repositori.git
+
+#Membuat Branch Baru
+Untuk membuat branch baru:
+
+git checkout -b nama-branch
+
+#Menggabungkan Branch
+Untuk menggabungkan branch ke branch utama:
+
+- Pindah ke branch utama:
+
+git checkout master
+
+- Gabungkan branch:
+
+git merge nama-branch
+
+#Mengirim Perubahan ke GitHub
+Untuk mengirim perubahan ke repositori GitHub:
+
+git push origin nama-branch
+
+#Membuat Pull Request
+Untuk membuat pull request:
+
+- Push branch ke GitHub.
+- Buka repositori di GitHub.
+- Klik tombol "New Pull Request".
+- Pilih branch yang ingin digabungkan dan buat pull request.
+
+
+#Mengelola Issues
+Untuk melacak tugas, bug, atau fitur baru, gunakan tab "Issues" di repositori GitHub Anda. Anda dapat membuat issue baru dan menetapkannya kepada anggota tim Anda.

@@ -1,0 +1,6 @@
+Git adalah sistem kontrol versi terdistribusi yang digunakan untuk melacak perubahan dalam kode sumber selama pengembangan perangkat lunak. Git memungkinkan banyak pengembang untuk bekerja bersama secara lebih efisien dan mengelola proyek mereka dengan lebih baik.
+
+Fitur Utama Git:
+- Version Control: Melacak semua perubahan yang dilakukan pada file.
+- Branching and Merging: Membuat dan menggabungkan cabang pengembangan untuk mengelola fitur baru atau perbaikan bug.
+- Distributed Development: Setiap pengembang memiliki salinan lengkap dari seluruh sejarah proyek.

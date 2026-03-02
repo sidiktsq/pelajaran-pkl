@@ -1,0 +1,117 @@
+#Apa Itu GitHub?
+GitHub adalah platform berbasis web yang digunakan untuk hosting repositori Git. GitHub menyediakan kontrol versi dan kolaborasi bagi para pengembang untuk bekerja bersama secara efektif, baik dalam tim kecil maupun proyek open source berskala besar.
+
+GitHub memungkinkan banyak orang untuk mengelola perubahan kode, mengerjakan proyek bersama, memantau masalah (issues), dan mengatur alur kerja otomatis (CI/CD) dari mana saja.
+
+#Mengapa Menggunakan GitHub?
+- Memudahkan kolaborasi pengembangan proyek.
+- Menyimpan riwayat perubahan kode (version control).
+- Memantau dan menyelesaikan bug dan tugas secara terorganisir.
+- Mengotomatiskan proses seperti testing dan deployment dengan GitHub Actions.
+- Memungkinkan siapa saja berkontribusi pada proyek open source melalui pull request.
+
+#Fitur Utama GitHub
+
+1. Repositories (Repositori)
+Repositori adalah tempat untuk menyimpan kode sumber, dokumentasi, dan file proyek. Setiap proyek yang diunggah di GitHub disimpan dalam sebuah repositori.
+
+-Dapat diatur menjadi public (terbuka) atau private (terbatas).
+-Menyimpan riwayat revisi file menggunakan Git.
+
+2. Pull Requests
+Pull Request digunakan untuk:
+
+-Mengajukan perubahan kode agar bisa ditinjau dan digabungkan ke branch utama (biasanya main atau master).
+-Mendukung diskusi tim dengan sistem komentar.
+-Memungkinkan review kode sebelum digabungkan.
+
+Pull Request merupakan inti dari kolaborasi di GitHub.
+
+3. Issues
+Issues berfungsi untuk:
+
+-Melacak bug, tugas, dan ide pengembangan.
+-Mempermudah manajemen proyek dengan label, milestone, dan assignment ke anggota tim.
+-Menjadi pusat diskusi terbuka bagi pengguna proyek.
+
+4. GitHub Actions
+GitHub Actions adalah:
+
+-Fitur CI/CD (Continuous Integration/Continuous Deployment) bawaan GitHub.
+-Memungkinkan otomatisasi alur kerja seperti:
+-Build dan testing otomatis saat push kode.
+-Deployment ke server atau platform cloud.
+-Menjadwalkan tugas rutin (seperti backup atau update dependencies).    
+
+5. Fork
+Fork adalah:
+
+-Salinan repositori yang dibuat ke akun pribadi untuk dikembangkan secara independen.
+-Sering digunakan dalam kontribusi open source.
+
+6. Wiki
+Wiki memungkinkan:
+
+-Menulis dokumentasi lengkap dalam satu repositori.
+-Menjadi pusat dokumentasi proyek yang mudah diakses dan dikelola.
+
+7. Projects
+GitHub Projects menyediakan:
+
+-Papan tugas (seperti Kanban) untuk mengelola pekerjaan secara visual.
+-Integrasi langsung dengan Issues dan Pull Request.
+
+8. GitHub Pages
+GitHub Pages memungkinkan:
+
+-Hosting website statis gratis langsung dari repositori GitHub.
+-Cocok untuk portofolio, dokumentasi, atau landing page sederhana.
+
+#Cara Kerja GitHub Secara Umum
+
+1. Membuat repositori di GitHub.
+2. Clone repositori ke komputer lokal.
+3. Membuat perubahan dan commit.
+4. Push perubahan ke GitHub.
+5. Buat Pull Request untuk menggabungkan perubahan.
+6. Tim melakukan code review dan testing.
+7. Merge ke branch utama.
+8. (Opsional) GitHub Actions otomatis menjalankan testing atau deployment.
+
+#Langkah-Langkah Membuat Akun GitHub
+
+1. Buka Situs GitHub
+Akses https://github.com melalui browser.
+
+2. Klik Tombol "Sign Up"
+Di halaman utama GitHub, klik tombol Sign up yang biasanya terletak di pojok kanan atas.
+
+3. Isi Formulir Pendaftaran
+-Masukkan informasi berikut:
+-Username: Nama unik yang akan menjadi identitas kamu di GitHub.
+-Email Address: Gunakan email yang aktif.
+-Password: Buat password yang kuat.
+
+4. Verifikasi Captcha
+- GitHub biasanya meminta kamu menyelesaikan captcha untuk memverifikasi bahwa kamu bukan robot.
+
+5. Pilih Opsi Paket
+- GitHub menyediakan paket gratis dan paket berbayar.
+- Kamu bisa langsung memilih opsi Free untuk penggunaan standar (cukup untuk belajar dan bekerja).
+
+6. Konfirmasi Email
+- GitHub akan mengirimkan email verifikasi ke alamat email yang kamu daftarkan.
+- Buka email tersebut dan klik link verifikasi.
+
+7. Akun Siap Digunakan
+Setelah verifikasi berhasil, akun GitHub kamu sudah aktif dan bisa digunakan untuk:
+- Membuat repositori
+- Meng-clone repositori
+- Mengelola project
+- Berkontribusi ke proyek open source
+- Menggunakan GitHub Pages dan GitHub Actions
+
+Tips Penting:
+- Gunakan username profesional jika akun akan digunakan untuk portofolio kerja.
+- Aktifkan two-factor authentication (2FA) untuk meningkatkan keamanan akun.
+- Gunakan email yang sama jika kamu ingin menghubungkan akun GitHub dengan konfigurasi Git di komputer lokal (agar riwayat commit terhubung dengan akun GitHub kamu).

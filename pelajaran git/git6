@@ -1,0 +1,25 @@
+Berikut adalah langkah-langkah untuk memulai proyek baru dan mengelola perubahan dengan Git dan GitHub:
+
+#Membuat Repositori Baru di GitHub:
+- Buka GitHub dan buat repositori baru.
+- Salin URL repositori.
+
+#Mengkloning Repositori ke Lokal:
+git clone https://github.com/username/nama-repositori.git
+cd nama-repositori
+
+#Membuat Branch Baru untuk Fitur:
+git checkout -b fitur-baru
+
+#Melakukan Perubahan dan Commit:
+echo "console.log('Hello, World!')" > hello.js
+git add hello.js
+git commit -m "Menambahkan fitur baru: hello.js"    
+
+#Push Perubahan ke GitHub:
+git push origin fitur-baru
+
+#Membuat Pull Request di GitHub:
+- Buka repositori di GitHub.
+- Klik tombol "New Pull Request".
+- Pilih branch fitur-baru dan buat pull request.

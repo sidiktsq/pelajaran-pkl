@@ -1,0 +1,30 @@
+Berikut adalah beberapa perintah dasar Git untuk memulai:
+
+#Konfigurasi Awal
+Setelah menginstal Git, konfigurasikan informasi pengguna Anda:
+
+git config --global user.name "Nama Anda"
+git config --global user.email "email@anda.com"
+
+#Membuat Repositori Baru
+Untuk membuat repositori baru:
+
+mkdir nama-proyek
+cd nama-proyek
+git init
+
+#Menambahkan File ke Repositori
+Untuk menambahkan file ke repositori dan melakukan commit:
+
+echo "# Nama Proyek" > README.md
+git add README.md
+git commit -m "Menambahkan README.md"
+
+#Menghubungkan ke Repositori GitHub
+Untuk menghubungkan repositori lokal ke repositori GitHub:
+
+- Buat repositori baru di GitHub.
+- Jalankan perintah berikut di terminal:
+
+git remote add origin https://github.com/username/nama-repositori.git
+git push -u origin master

@@ -1,0 +1,13 @@
+Untuk menggunakan Git, Anda harus menginstalnya terlebih dahulu di komputer Anda. Berikut adalah langkah-langkah instalasi:
+
+#Windows
+- Unduh Git dari git-scm.com.
+- Jalankan installer dan ikuti petunjuk instalasi.
+
+#macOS
+- Instal Git menggunakan Homebrew:
+brew install git
+
+#Linux
+- Instal Git menggunakan paket manajer:
+sudo apt-get install git
